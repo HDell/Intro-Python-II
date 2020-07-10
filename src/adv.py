@@ -1,11 +1,14 @@
 from room import Room
 from player import Player
+from items import Item
+
+
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", [Item("lamp", "a brightly lit lamp"), Item("sword", "a dull sword")]),
 
     'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty passages run north and east."""),
 
@@ -50,31 +53,37 @@ while inprogress:
     print()
     move = input("Which direction would you like to go? Enter 'N' 'S' 'E' 'W' (for North, South, East or West) or 'Q' (to quit): ").lower()
     print(move)
-    if move == "q":
+    if move[0] == "q":
         inprogress = False
-    elif move == "n":
+    elif move[0] == "n":
         if player.room.n_to:
             player.room = player.room.n_to
         else:
             print("There's nothing this way.")
         print()
-    elif move == "s":
+    elif move[0] == "s":
         if player.room.s_to:
             player.room = player.room.s_to
         else:
             print("There's nothing this way.")
         print()
-    elif move == "e":
+    elif move[0] == "e":
         if player.room.e_to:
             player.room = player.room.e_to
         else:
             print("There's nothing this way.")
         print()
-    elif move == "w":
+    elif move[0] == "w":
         if player.room.w_to:
             player.room = player.room.w_to
         else:
             print("There's nothing this way.")
         print()
+    elif move.split(" ")[0] == "get":
+        player.pick_up(move.split(" ")[1])
+    elif move.split(" ")[0] == "drop":
+        player.drop(move.split(" ")[1])
+    elif move[0] == "i":
+        print(player.inventory)
     else:
-        print("Please enter a valid direction.")    
+        print("Please enter a valid direction.")
