@@ -1,24 +1,22 @@
 from room import Room
+from player import Player
+from items import Item
+
+
 
 # Declare all the rooms
 
 room = {
     'outside':  Room("Outside Cave Entrance",
-                     "North of you, the cave mount beckons"),
+                     "North of you, the cave mount beckons", [Item("lamp", "a brightly lit lamp"), Item("sword", "a dull sword")]),
 
-    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty
-passages run north and east."""),
+    'foyer':    Room("Foyer", """Dim light filters in from the south. Dusty passages run north and east."""),
 
-    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling
-into the darkness. Ahead to the north, a light flickers in
-the distance, but there is no way across the chasm."""),
+    'overlook': Room("Grand Overlook", """A steep cliff appears before you, falling into the darkness. Ahead to the north, a light flickers in the distance, but there is no way across the chasm."""),
 
-    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west
-to north. The smell of gold permeates the air."""),
+    'narrow':   Room("Narrow Passage", """The narrow passage bends here from west to north. The smell of gold permeates the air."""),
 
-    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure
-chamber! Sadly, it has already been completely emptied by
-earlier adventurers. The only exit is to the south."""),
+    'treasure': Room("Treasure Chamber", """You've found the long-lost treasure chamber! Sadly, it has already been completely emptied by earlier adventurers. The only exit is to the south."""),
 }
 
 
@@ -38,7 +36,7 @@ room['treasure'].s_to = room['narrow']
 #
 
 # Make a new player object that is currently in the 'outside' room.
-
+player = Player(room['outside'])
 # Write a loop that:
 #
 # * Prints the current room name
@@ -49,3 +47,43 @@ room['treasure'].s_to = room['narrow']
 # Print an error message if the movement isn't allowed.
 #
 # If the user enters "q", quit the game.
+inprogress = True
+while inprogress:
+    print(player)
+    print()
+    move = input("Which direction would you like to go? Enter 'N' 'S' 'E' 'W' (for North, South, East or West) or 'Q' (to quit): ").lower()
+    print(move)
+    if move[0] == "q":
+        inprogress = False
+    elif move[0] == "n":
+        if player.room.n_to:
+            player.room = player.room.n_to
+        else:
+            print("There's nothing this way.")
+        print()
+    elif move[0] == "s":
+        if player.room.s_to:
+            player.room = player.room.s_to
+        else:
+            print("There's nothing this way.")
+        print()
+    elif move[0] == "e":
+        if player.room.e_to:
+            player.room = player.room.e_to
+        else:
+            print("There's nothing this way.")
+        print()
+    elif move[0] == "w":
+        if player.room.w_to:
+            player.room = player.room.w_to
+        else:
+            print("There's nothing this way.")
+        print()
+    elif move.split(" ")[0] == "get":
+        player.pick_up(move.split(" ")[1])
+    elif move.split(" ")[0] == "drop":
+        player.drop(move.split(" ")[1])
+    elif move[0] == "i":
+        print(player.inventory)
+    else:
+        print("Please enter a valid direction.")
